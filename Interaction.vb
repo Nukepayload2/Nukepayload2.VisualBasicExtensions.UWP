@@ -1,7 +1,10 @@
 ﻿#If WINDOWS_UWP Then
 Imports Windows.UI.Popups
 Public Module Interaction
-    Public Async Function MsgBoxAsync(Prompt$, HasCancel As Boolean, Title$, Optional OK$ = "确定", Optional Cancel$ = "取消") As Task(Of Boolean?)
+    Public Async Function MsgBoxAsync(Prompt$, Optional HasCancel As Boolean = False, Optional Title$ = Nothing, Optional OK$ = "确定", Optional Cancel$ = "取消") As Task(Of Boolean?)
+        If Title Is Nothing Then
+            Title = Package.Current.DisplayName
+        End If
         Dim dlg As New MessageDialog(Prompt, Title)
         Dim Result As Boolean?
         Dim msg As New MessageDialog(Prompt, Title)
@@ -15,9 +18,40 @@ Public Module Interaction
         Await tsk
         Return Result
     End Function
+
     Dim inputbox As New InputBox()
     Public Async Function InputBoxAsync(Prompt$, Title$, Optional InputScope As InputScopeNameValue = InputScopeNameValue.Text) As Task(Of String)
         Return Await inputbox.ShowAsync(Prompt, Title, InputScope)
+    End Function
+
+    Public Sub SaveSetting(Of T)(Section$, Key$, Value As T)
+        Dim sto = Windows.Storage.ApplicationData.Current.LocalSettings.Values
+        Dim Name = Section & "\" & Key
+        If sto.ContainsKey(Name) Then
+            sto(Name) = Value
+        Else
+            sto.Add(Name, Value)
+        End If
+    End Sub
+
+    Public Sub DeleteSetting(Section$, Key$)
+        Dim sto = Windows.Storage.ApplicationData.Current.LocalSettings.Values
+        Dim Name = Section & "\" & Key
+        If sto.ContainsKey(Name) Then sto.Remove(Name)
+    End Sub
+
+    Public Function LoadSetting(Of T)(Section$, Key$) As T
+        Dim sto = Windows.Storage.ApplicationData.Current.LocalSettings.Values
+        Dim Name = Section & "\" & Key
+        If sto.ContainsKey(Name) Then
+            Dim v = sto(Name)
+            If TypeOf v Is T Then
+                Return DirectCast(v, T)
+            Else
+                Return Nothing
+            End If
+        End If
+        Return Nothing
     End Function
 End Module
 #End If

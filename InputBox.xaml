@@ -9,16 +9,13 @@
     <ContentDialog.Content>
         <Grid MinWidth="100" MinHeight="100">
             <Grid.RowDefinitions>
-                <RowDefinition Height="13*"/>
-                <RowDefinition Height="7*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="71*"/>
-                <ColumnDefinition Width="19*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock x:Name="TxtPrompt"></TextBlock>
+            <TextBlock MinHeight="50" TextWrapping="Wrap" x:Name="TxtPrompt"></TextBlock>
             <TextBox x:Name="TxtOutput" Grid.Row="1"></TextBox>
-            <Button Grid.Row="1" Grid.Column="1" Click="BtnOk_Click">确定</Button>
+            <Button Grid.Row="2" HorizontalAlignment="Right" Padding="32,8" Margin="0,4" Click="BtnOk_Click">确定</Button>
         </Grid>
     </ContentDialog.Content>
 </ContentDialog>

@@ -12,7 +12,7 @@ Public Module VBMath
         rand = New Random(New SingleInt32(Number).Int32Value)
     End Sub
 
-    Public Function Rnd() As Single
+    Public Function Rndf() As Single
         Return rand.NextDouble
     End Function
 
