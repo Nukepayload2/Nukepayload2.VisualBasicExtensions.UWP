@@ -40,7 +40,7 @@ Public Module Interaction
         If sto.ContainsKey(Name) Then sto.Remove(Name)
     End Sub
 
-    Public Function LoadSetting(Of T)(Section$, Key$) As T
+    Public Function LoadSetting(Of T)(Section$, Key$, Optional DefaultValue As T = Nothing) As T
         Dim sto = Windows.Storage.ApplicationData.Current.LocalSettings.Values
         Dim Name = Section & "\" & Key
         If sto.ContainsKey(Name) Then
@@ -48,10 +48,10 @@ Public Module Interaction
             If TypeOf v Is T Then
                 Return DirectCast(v, T)
             Else
-                Return Nothing
+                Return DefaultValue
             End If
         End If
-        Return Nothing
+        Return DefaultValue
     End Function
 End Module
 #End If
